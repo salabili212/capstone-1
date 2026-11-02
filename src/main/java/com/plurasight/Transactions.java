@@ -3,6 +3,7 @@ package com.plurasight;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Transactions {
@@ -18,7 +19,7 @@ public class Transactions {
     String ledgerPrompt = "####### Ledger #######\n" +
             "A)All\nD)Deposit\nP)Payments\nR)Reports\nH)Home";
     //Prompt for the Reports page
-    String reportsPrompt = "####### Reports #######\nPlease enter number for the section you need OR H.\n" +
+    String reportsPrompt = "####### Reports #######\nPlease enter number for the section you need OR 0.\n" +
             "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Previous Year\n5)Search by Vendor\n0)Back\n";
 
 
@@ -73,11 +74,77 @@ public class Transactions {
         switch (userChoice){
             case 'D' -> addDeposit();
             case 'P' -> makePayment();
-            case 'L' -> ledger(scanner);
+            case 'L' -> ledger(scanner,userId);
             case 'X' -> closingMethod();
             default -> System.out.println("Invalid input.\nPlease try again.");
         }
     }
+
+    public static void ledger(Scanner scanner,String userId){
+        String ledgerPrompt = "####### Ledger #######\n" +
+                "A)All\nD)Deposit\nP)Payments\nR)Reports\nH)Home";
+        String userInput = scanner.nextLine();
+        userInput = userInput.toUpperCase();
+        char userChoice = userInput.charAt(0);
+        switch (userChoice){
+            case 'A' -> showAllEntries();//show all the transactions in the account
+            case 'D' -> peposit();//Display only the entries that are deposits into the account
+            case 'P' -> payment();// Display only the negative entries (or payments)
+            case 'R' -> reports();//A new screen that allows the user to run pre-defined reports or to run a custom search
+            case 'H' -> home();//back the main page
+            default -> System.out.println("Invalid input.\nPlease try again.");
+        }
+
+    }
+
+    public static void reports(String userId, Scanner scanner){
+        while(true) {
+            //Prompt for the Reports page
+            String reportsPrompt = "####### Reports #######\nPlease enter number for the section you need OR 0.\n" +
+                    "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Previous Year\n5)Search by Vendor\n0)Back\n";
+            int userChoice = scanner.nextInt();
+            switch (userChoice) {
+                case 1 -> monthToDate(userId,scanner);//show all transaction for all months to the update months
+                case 2 -> previousMonth();//show all the transaction for the prvious month
+                case 3 -> yearTODate();//show all transactions from userI
+                case 4 -> searchByVendor();//prompt the user for the vendor name and display all entries for that vendor
+                case 0 -> ledger(scanner, userId);
+                default -> System.out.println("Invalid number.\nTry again please.:)\n");
+            }
+        }
+    }
+
+
+    //it is not ready to display all month
+    //work on displaying from moth-today date
+
+    public static void monthToDate(String userId,Scanner scanner){
+
+        System.out.println("Transaction will display from month date to today date.\nEnter month date:month/day/year");
+        String monthDate = scanner.nextLine();
+        monthDate = monthDate.trim();
+        LocalDate userMonthDate=  LocalDate.parse(monthDate);
+
+        try {
+            BufferedReader bufreader = new BufferedReader(new FileReader("src/main/resources/transactions"));
+            String userInfo = bufreader.readLine();
+            while(userInfo != null){
+                userInfo = bufreader.readLine();
+                if (userInfo == null) break;
+                String[] userInfoList = (userInfo.trim()).split("\\|");
+                LocalDate fileMonthDate = LocalDate.parse(userInfoList[0]);
+                if (userMonthDate.equals(fileMonthDate)){
+                    System.out.println(userInfo);
+                }
+            }
+            bufreader.close();
+            reports(userId,scanner);
+        }catch (Exception e) {
+            System.out.println("Can not found the file.\nmonthToDate()'s method in transaction class\n" + e);
+        }
+    }
+
+
 
 
 
