@@ -9,3 +9,73 @@ date|time|description|vendor|amount
 2023-04-21|12:30:00|client lunch|Panera Bread|-38.25
 2023-04-22|15:10:00|Invoice 1003 paid|Joe|500.00
 2023-04-23|11:05:00|shipping supplies|USPS|-18.60
+2025-01-05|09:00:00|paycheck|Employer|2200.00
+2025-01-18|14:00:00|internet bill|Comcast|-65.00
+2025-02-08|10:30:00|groceries|Costco|-125.50
+2025-02-20|11:15:00|Invoice 1001 paid|Jane|750.00
+2025-03-04|08:00:00|rent|Landlord|-1200.00
+2025-03-16|13:20:00|printer paper|Amazon|-24.99
+2025-04-10|12:30:00|client lunch|Panera Bread|-38.25
+2025-04-22|15:10:00|Invoice 1002 paid|Joe|500.00
+2025-05-06|09:45:00|electric bill|City Power|-110.50
+2025-05-19|16:00:00|refund|Amazon|35.99
+2025-06-11|11:05:00|shipping supplies|USPS|-18.60
+2025-06-25|09:00:00|paycheck|Employer|2200.00
+2025-07-03|14:15:00|gas|Shell|-45.00
+2025-07-17|10:00:00|Invoice 1003 paid|Ali|900.00
+2025-08-09|15:30:00|office chair|Staples|-149.99
+2025-08-21|12:00:00|phone bill|T-Mobile|-70.00
+2025-09-02|08:30:00|rent|Landlord|-1200.00
+2025-09-15|09:00:00|paycheck|Employer|2200.00
+2025-10-07|13:45:00|groceries|Walmart|-89.75
+2025-10-24|11:30:00|Invoice 1004 paid|Sara|650.00
+2025-11-12|14:00:00|internet bill|Comcast|-65.00
+2025-11-26|17:15:00|dinner|Olive Garden|-54.80
+2025-12-05|09:00:00|paycheck|Employer|2200.00
+2025-12-29|10:20:00|car insurance|Geico|-135.00
+2026-01-06|08:00:00|rent|Landlord|-1250.00
+2026-02-14|12:30:00|lunch|Panera Bread|-22.50
+2026-03-19|09:00:00|paycheck|Employer|2300.00
+2026-04-23|14:00:00|internet bill|Comcast|-70.00
+2026-05-11|10:15:00|Invoice 1005 paid|Jane|850.00
+2026-06-08|16:45:00|groceries|Costco|-145.25
+2026-07-21|11:00:00|office supplies|Staples|-48.90
+2026-08-17|09:00:00|paycheck|Employer|2300.00
+2026-09-30|18:30:00|gas|Shell|-42.00
+2026-10-01|08:00:00|rent|Landlord|-1250.00
+2026-10-02|09:15:00|paycheck|Employer|2300.00
+2026-10-03|10:45:00|groceries|Walmart|-95.60
+2026-10-04|14:00:00|internet bill|Comcast|-70.00
+2026-10-05|13:20:00|printer paper|Amazon|-24.99
+2026-10-06|08:15:00|electric bill|City Power|-115.50
+2026-10-07|12:30:00|client lunch|Panera Bread|-38.25
+2026-10-08|15:10:00|Invoice 1006 paid|Joe|500.00
+2026-10-09|11:05:00|shipping supplies|USPS|-18.60
+2026-10-10|16:20:00|gas|Shell|-46.75
+2026-10-11|10:00:00|refund|Amazon|24.99
+2026-10-12|09:30:00|phone bill|T-Mobile|-70.00
+2026-10-13|14:45:00|Invoice 1007 paid|Sara|800.00
+2026-10-14|17:00:00|groceries|Costco|-132.40
+2026-10-15|09:00:00|paycheck|Employer|2300.00
+2026-10-16|11:30:00|car insurance|Geico|-135.00
+2026-10-17|13:15:00|coffee|Starbucks|-6.50
+2026-10-18|15:45:00|office desk|IKEA|-199.00
+2026-10-19|10:20:00|Invoice 1008 paid|Ali|950.00
+2026-10-20|08:40:00|water bill|City Water|-55.25
+2026-10-21|12:10:00|parking|City Parking|-15.00
+2026-10-22|16:30:00|software subscription|Adobe|-29.99
+2026-10-23|14:00:00|Invoice 1009 paid|Jane|725.00
+2026-10-24|11:45:00|groceries|Trader Joes|-78.90
+2026-10-25|18:00:00|dinner|Olive Garden|-62.35
+2026-10-26|09:50:00|shipping fee|FedEx|-22.80
+2026-10-27|13:00:00|refund|Staples|48.90
+2026-10-28|15:20:00|gas|Shell|-40.50
+2026-10-29|10:30:00|Invoice 1010 paid|Omar|600.00
+2026-10-30|09:00:00|paycheck|Employer|2300.00
+2026-10-31|20:15:00|online purchase|Amazon|-85.99
+2026-11-01|08:00:00|rent|Landlord|-1250.00
+2026-11-02|14:00:00|internet bill|Comcast|-70.00
+2026-11-03|10:45:00|groceries|Walmart|-92.30
+2026-11-03|02:37:54|mobile line||-900.0
+2026-11-03|02:39:43|amazon||-900.0
+2026-11-03|02:40:41|amazon|amazon|900.0
