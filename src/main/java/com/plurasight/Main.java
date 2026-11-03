@@ -16,7 +16,7 @@ public class Main {
 
         if(userId != null) {
             //homeScreen(userId,scanner);
-            reports(userId,scanner);
+            homeScreen(userId,scanner);
         }
 
 

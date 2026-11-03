@@ -1,11 +1,11 @@
-id|name|balance|status
-101|Ali Hassan|1500.00|active
-102|Sara Ahmed|2750.50|active
-103|Omar Khalid|0.00|inactive
-104|Maya Smith|820.75|active
-105|John Brown|125.00|inactive
-106|Lina Salem|4300.25|active
-107|Adam Jones|650.00|active
-108|Noor Saleh|0.00|inactive
-109|James Wilson|1920.80|active
-110|Hana Ali|350.50|active
+date|time|description|vendor|amount
+2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
+2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
+2023-04-16|09:30:00|office supplies|Staples|-42.75
+2023-04-17|14:00:00|internet bill|Comcast|-65.00
+2023-04-18|10:45:00|Invoice 1002 paid|Jane|750.00
+2023-04-19|13:20:00|printer paper|Amazon|-24.99
+2023-04-20|08:15:00|electric bill|City Power|-110.50
+2023-04-21|12:30:00|client lunch|Panera Bread|-38.25
+2023-04-22|15:10:00|Invoice 1003 paid|Joe|500.00
+2023-04-23|11:05:00|shipping supplies|USPS|-18.60
