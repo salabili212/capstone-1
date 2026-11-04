@@ -211,7 +211,7 @@ public class Transactions {
                 case 2 -> previousMonth(scanner,fileTransaction);//show all the transaction for the prvious month
                 case 3 -> yearTODate(scanner,fileTransaction);//show all transactions from userI
                 case 4 -> searchByVendor(scanner,fileTransaction);//prompt the user for the vendor name and display all entries for that vendor
-                case 5 -> customSearch(scanner,fileTransaction);
+                case 5 -> search(scanner,fileTransaction);
                 case 0 -> ledger(scanner,fileTransaction);
                 default -> System.out.println("Invalid number.\nTry again please.:)\n");
             }
