@@ -1,5 +1,5 @@
 package com.plurasight;
-
+//import all needed packages
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
@@ -9,17 +9,12 @@ import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Date;
 import java.util.regex.Pattern;
 
 public class Transactions {
-    private String userId;
-    private String userName;
-    private String depositHistory;
-    private String paymentHistory;
-    private double balance;
-
     //Prompt for the Ledger page
     String ledgerPrompt = "####### Ledger #######\n" +
             "A)All\nD)Deposit\nP)Payments\nR)Reports\nH)Home";
@@ -29,50 +24,37 @@ public class Transactions {
 
 
     //Start method that check if the user has an account so can get accesses to his account
-    public static String start(){
-        int stop = 999;
-        while(stop != 0) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Please enter your ID.\nID:\nEnter 0 to Exit\n");
-            String userId = scanner.nextLine();
-            if (userId.equals("0")){stop = 0; break;};
-            try {
-                //Reading info from a file
-                BufferedReader buffer = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
-                String userInfo = buffer.readLine();
-                while (userInfo != null) {
-                    userInfo = buffer.readLine();
-                    if (userInfo == null) break;
-                    String[] userInfoList = userInfo.split("\\|");
-                    if ("123".equals(userId)) return userId;
-                }
-                if (userId == null) System.out.println("ID not valid in the system.\nTry to enter a valid ID:)\n");
-                buffer.close();
-            } catch (Exception e) {
-                System.out.println("have Problem with reading the file in start method in main\n" + e);
-            }
-        }
-        return null;
+    public static void start(int stop){
+       if(stop == 0){
+           System.out.println("Thank......:)");
+       }else {
+           homeScreen(new Scanner(System.in));
+       }
+
+
     }
 
 
-    public static void homeScreen(String userId, Scanner scanner){
-        String homePrompt = "####### Home #######\n" +
-                "Please enter a character for the section want to choose\n" +
-                "D)Add Deposit\nP)Make Payment (Debit)\nL)Ledger\nX)Exit";
+    public static void homeScreen(Scanner scanner){
+        while(true) {
+            String homePrompt = "####### Home #######\n" +
+                    "Please enter a character for the section want to choose\n" +
+                    "D)Add Deposit\nP)Make Payment (Debit)\nL)Ledger\nX)Exit";
 
-        //print out the mnue for the user to choose a section
-        System.out.println(homePrompt);
-        String userInput = scanner.nextLine();
-        userInput = userInput.toUpperCase().trim();
-        char userChoice = userInput.charAt(0);
+            //print out the mnue for the user to choose a section
+            System.out.println(homePrompt);
+            String userInput = scanner.nextLine();
+            userInput = userInput.toUpperCase().trim();
+            char userChoice = userInput.charAt(0);
+            String filePath = "src/main/resources/transactions.csv";
 
-        switch (userChoice){
-            case 'D' -> addDeposit(scanner,"src/main/resources/transactions.csv");
-            case 'P' -> makePayment(scanner,"src/main/resources/transactions.csv");
-            case 'L' -> ledger(scanner,userId);
-            case 'X' -> closingMethod();
-            default -> System.out.println("Invalid input.\nPlease try again.");
+            switch (userChoice) {
+                case 'D' -> addDeposit(scanner, filePath);
+                case 'P' -> makePayment(scanner, filePath);
+                case 'L' -> ledger(scanner, filePath);
+                case 'X' -> closingMethod(0);
+                default -> System.out.println("Invalid input.\nPlease try again.");
+            }
         }
     }
 
@@ -84,6 +66,7 @@ public class Transactions {
         String description = scanner.nextLine().trim();
         System.out.println("Payment amount:");
         double amount = scanner.nextDouble();
+        scanner.nextLine(); // clean the left over
         System.out.println("Vendor Name:");
         String vendor = scanner.nextLine();
 
@@ -93,6 +76,7 @@ public class Transactions {
             bufwriter.newLine();
             bufwriter.close();
             System.out.println("****** Payment was successfully ******");
+            homeScreen(scanner);
         }catch (Exception e){
             System.out.println("File not found.Payment() method" + e);
         }
@@ -104,24 +88,26 @@ public class Transactions {
         LocalDateTime datetime = LocalDateTime.now();
         String dateAndTime = datetime.format(format);
         System.out.println("Deposit description:");
-        String description = scanner.next();
+        String description = scanner.nextLine();
         System.out.println("Deposit amount:");
         double amount = scanner.nextDouble();
+        scanner.nextLine();
         System.out.println("Vendor:");
-        String vendor = scanner.next();
+        String vendor = scanner.nextLine();
+        System.out.println("****** Deposit was successfully ******");
 
         try {
             BufferedWriter bufwriter = new BufferedWriter(new FileWriter(fileTransaction,true));
             bufwriter.write(dateAndTime + "|" + description + "|" + vendor + "|" + amount);
             bufwriter.newLine();
             bufwriter.close();
-            homeScreen(userId,scanner);
+            homeScreen(scanner);
         }catch (Exception e){
             System.out.println("File not found.Deposit() method" + e);
         }
     }
 
-    public static void ledger(Scanner scanner,String userId){
+    public static void ledger(Scanner scanner,String filePath){
         while(true) {
             String ledgerPrompt = "####### Ledger #######\nA)All\nD)Deposit\nP)Payments\nR)Reports\nH)Home";
             System.out.println(ledgerPrompt);
@@ -129,26 +115,27 @@ public class Transactions {
             userInput = userInput.toUpperCase();
             char userChoice = userInput.charAt(0);
             switch (userChoice) {
-                case 'A' -> showAllEntries("src/main/resources/transactions.csv",userId);//show all the transactions in the account
-                case 'D' -> deposit("src/main/resources/transactions.csv",userId);//Display only the entries that are deposits into the account
-                case 'P' -> payment("src/main/resources/transactions.csv",userId);// Display only the negative entries (or payments)
-                case 'R' -> reports(userId, scanner);//A new screen that allows the user to run pre-defined reports or to run a custom search
-                case 'H' -> homeScreen(userId, scanner);//back the main page
+                case 'A' -> showAllEntries(filePath);//show all the transactions in the account
+                case 'D' -> deposit(filePath);//Display only the entries that are deposits into the account
+                case 'P' -> payment(filePath);// Display only the negative entries (or payments)
+                case 'R' -> reports(scanner,filePath);//A new screen that allows the user to run pre-defined reports or to run a custom search
+                case 'H' -> homeScreen(scanner);//back the main page
                 default -> System.out.println("Invalid input.\nPlease try again.");
             }
         }
 
     }
 
-    public static void closingMethod(){
-        start();
+    public static void closingMethod(int zero){
+        start(zero);
     }
 
 
 
 
 
-    public static void deposit(String fileTransaction,String userId){
+    //this function show all the deposit history
+    public static void deposit(String fileTransaction){
         //inside the fileTransaction the path for the file transaction should read from exp:"src/document"
         //Display only the entries that are deposits into the account
         try {
@@ -164,14 +151,14 @@ public class Transactions {
                 }
             }
             bufreader.close();
-            ledger(new Scanner(System.in),userId);
+            ledger(new Scanner(System.in),fileTransaction);
         }catch (Exception e){
             System.out.println("Error in the showAllEntries() method  inside can not read the file.\n" + e);
         }
     }
 
-    public static void payment(String fileTransaction,String userId){
-        //inside the fileTransaction the path for the file transaction should read from exp:"src/document"
+    public static void payment(String fileTransaction){
+        //inside the fileTransaction the path for the file where thr program read from exp:"src/document"
         //Display only the entries that are deposits into the account
         try {
             BufferedReader bufreader = new BufferedReader(new FileReader(fileTransaction));
@@ -186,14 +173,14 @@ public class Transactions {
                 }
             }
             bufreader.close();
-            ledger(new Scanner(System.in),userId);
+            ledger(new Scanner(System.in),fileTransaction);
         }catch (Exception e){
             System.out.println("Error in the showAllEntries() method  inside can not read the file.\n" + e);
         }
     }
 
 
-    public static void showAllEntries(String fileTransaction,String userId){
+    public static void showAllEntries(String fileTransaction){
         //inside the fileTransaction the path for the file transaction should read from exp:"src/document"
         //Display only the entries that are deposits into the account
         try {
@@ -205,26 +192,27 @@ public class Transactions {
                 System.out.println(userTransaction);
             }
             bufreader.close();
-            ledger(new Scanner(System.in),userId);
+            ledger(new Scanner(System.in),fileTransaction);
         }catch (Exception e){
             System.out.println("Error in the showAllEntries() method  inside can not read the file.\n" + e);
         }
     }
 
-    public static void reports(String userId, Scanner scanner){
+    public static void reports(Scanner scanner,String fileTransaction){
         while(true) {
             //Prompt for the Reports page
             String reportsPrompt = "####### Reports #######\nPlease enter number for the section you need OR 0.\n" +
-                    "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Search by Vendor\n0)Back\n";
+                    "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Previous Year\n5)Search by Vendor\n6)Custom Search\n0)Back\n";
             System.out.println(reportsPrompt);
             String userChoice = scanner.nextLine();
             int userChoiceInt = Integer.parseInt(userChoice);
             switch (userChoiceInt) {
-                case 1 -> monthToDate(userId,scanner);//show all transaction for all months to the update months
-                case 2 -> previousMonth(userId,scanner);//show all the transaction for the prvious month
-                case 3 -> yearTODate(userId,scanner);//show all transactions from userI
-                case 4 -> searchByVendor(userId,scanner);//prompt the user for the vendor name and display all entries for that vendor
-                case 0 -> ledger(scanner, userId);
+                case 1 -> monthToDate(scanner,fileTransaction);//show all transaction for all months to the update months
+                case 2 -> previousMonth(scanner,fileTransaction);//show all the transaction for the prvious month
+                case 3 -> yearTODate(scanner,fileTransaction);//show all transactions from userI
+                case 4 -> searchByVendor(scanner,fileTransaction);//prompt the user for the vendor name and display all entries for that vendor
+                case 5 -> customSearch(scanner,fileTransaction);
+                case 0 -> ledger(scanner,fileTransaction);
                 default -> System.out.println("Invalid number.\nTry again please.:)\n");
             }
         }
@@ -233,12 +221,13 @@ public class Transactions {
 
     //This method will read all the transaction from the provide date to today date
     //User will give the date for the month, and it will show all transaction from that month to to today's date
-    public static void monthToDate(String userId,Scanner scanner){
-        System.out.println("Transaction will display from month date you enter to today date.\nEnter month date:year/month/day:");
+    public static void monthToDate(Scanner scanner,String fileTransaction){
+        DateTimeFormatter foramter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        System.out.println("Transaction will display from month date you enter to today date.\nEnter month date:year-month-day:");
         String monthDate = scanner.nextLine();
-        LocalDate userMonthDate =  LocalDate.parse(monthDate.trim()).withDayOfMonth(1);
+        LocalDate userMonthDate =  LocalDate.parse(monthDate.trim(),foramter).withDayOfMonth(1);
         try {
-            BufferedReader bufreader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+            BufferedReader bufreader = new BufferedReader(new FileReader(fileTransaction));
             String userInfo = bufreader.readLine();
             while(userInfo != null){
                 userInfo = bufreader.readLine();
@@ -251,7 +240,7 @@ public class Transactions {
                 }
             }
             bufreader.close();
-            reports( userId,scanner );
+            reports(scanner,fileTransaction);
         }catch ( Exception e ) {
             System.out.println("Can not found the file.\nMonthToDate()'s method in transaction class\n" + e);
         }
@@ -259,10 +248,10 @@ public class Transactions {
 
     //This method show all the transaction for the previous month
     //user provide the month date, and it gives the transactions for the month before it
-    public static void previousMonth(String userId,Scanner scanner){
+    public static void previousMonth(Scanner scanner,String fileTransaction){
         LocalDate date = LocalDate.now().minusMonths(1);
         try {
-            BufferedReader bufreader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+            BufferedReader bufreader = new BufferedReader(new FileReader(fileTransaction));
             String userInfo = bufreader.readLine();
             while(userInfo != null){
                 userInfo = bufreader.readLine();
@@ -275,7 +264,7 @@ public class Transactions {
                 }
             }
             bufreader.close();//after all reading the
-            reports(userId,scanner);
+            reports(scanner,fileTransaction);
         }catch (Exception e) {
             System.out.println("Can not found the file.\npreviousMonth()'s method in transaction class\n" + e);
         }
@@ -283,12 +272,12 @@ public class Transactions {
 
     //This method will read all the transaction from the provide date to today date
     //It depends on the year input
-    public static void yearTODate(String userId,Scanner scanner){
+    public static void yearTODate(Scanner scanner,String fileTransaction){
         System.out.println("Transaction will display from year date you enter to today date.\nEnter year in numbers exp:2024");
         String yearDate = scanner.nextLine();
         LocalDate userYearDate= LocalDate.of(Integer.parseInt(yearDate.trim()), 1, 1);
         try {
-            BufferedReader bufreader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+            BufferedReader bufreader = new BufferedReader(new FileReader(fileTransaction));
             String userInfo = bufreader.readLine();
             while(userInfo != null){
                 userInfo = bufreader.readLine();
@@ -301,19 +290,19 @@ public class Transactions {
                 }
             }
             bufreader.close();//after all reading the
-            reports(userId,scanner);
+            reports(scanner,fileTransaction);
         }catch (Exception e) {
             System.out.println("Can not found the file.\nyearToDate()'s method in transaction class\n" + e);
         }
     }
 
 
-    public static void searchByVendor(String userId,Scanner scanner){
+    public static void searchByVendor(Scanner scanner,String fileTransaction){
         System.out.println("Please Enter Vendor: ");
         String userVendor = scanner.nextLine().toLowerCase().trim();
 
         try {
-            BufferedReader bufreader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
+            BufferedReader bufreader = new BufferedReader(new FileReader(fileTransaction));
             String userInfo = bufreader.readLine();
             while(userInfo != null){
                 userInfo = bufreader.readLine();
@@ -326,12 +315,36 @@ public class Transactions {
                 }
             }
             bufreader.close();//after all reading the
-            reports(userId,scanner);
+            reports(scanner,fileTransaction);
         }catch (Exception e) {
             System.out.println("Can not found the file.\nsearchByVendor()'s method in transaction class\n" + e);
         }
     }
 
+
+    public static void search(Scanner scanner,String fileTransaction){
+        System.out.println("******** Custom Search ********\nPlease fill out the custom's fields");
+        System.out.println("Start Date:");
+        String startDate = scanner.nextLine().trim();
+        System.out.println("End Date:");
+        String endDate = scanner.nextLine().trim();
+        System.out.println("Description:");
+        String description = scanner.nextLine().trim();
+        System.out.println("Vendor:");
+        String vendor = scanner.nextLine().trim();
+        System.out.println("Amount:");
+        String amount = scanner.nextLine().trim();
+
+
+
+
+
+
+
+    }
+    public static void customSearch(String startDate,String endDate,String description,String vendor,String amount,String fileTransaction){
+
+    }
 
 
 
