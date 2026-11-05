@@ -211,7 +211,7 @@ public class Transactions {
                 case 2 -> previousMonth(scanner,fileTransaction);//show all the transaction for the prvious month
                 case 3 -> yearTODate(scanner,fileTransaction);//show all transactions from userI
                 case 4 -> searchByVendor(scanner,fileTransaction);//prompt the user for the vendor name and display all entries for that vendor
-                case 5 -> customSearch(scanner,fileTransaction);
+                case 6 -> customSearch(scanner,fileTransaction);
                 case 0 -> ledger(scanner,fileTransaction);
                 default -> System.out.println("Invalid number.\nTry again please.:)\n");
             }
@@ -345,13 +345,15 @@ public class Transactions {
             while(userInfo != null){
                 userInfo = bufReader.readLine();
                 String[] userInfoList = userInfo.split("\\|");
+
+                //This boolean expersion will check all the expect status whether the status are correct or empty
                 boolean comparingCondtion = ((startDate.isEmpty() || userInfoList[0].equals(startDate)) &&
                         (description.isEmpty() || userInfoList[2].contains(description))
                         && (vendor.isEmpty() || userInfoList[3].equalsIgnoreCase(vendor)) &&
                         (amount.isEmpty() || userInfoList[4].equals(amount)));
+                //will give an out if the comparingCondtion is true.
                 if (comparingCondtion){
                     System.out.println(userInfo);
-
                 }
                 bufReader.close();
                 reports(scanner,fileTransaction);
