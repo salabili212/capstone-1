@@ -325,6 +325,8 @@ public class Transactions {
 
 
     public static void customSearch(Scanner scanner,String fileTransaction){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         System.out.println("******** Custom Search ********\nPlease fill out the custom's fields");
         System.out.println("Start Date:");
         String startDate = scanner.nextLine().trim();
@@ -345,19 +347,24 @@ public class Transactions {
             while(userInfo != null){
                 userInfo = bufReader.readLine();
                 String[] userInfoList = userInfo.split("\\|");
+                LocalDate endDateConversion = LocalDate.parse(endDate,formatter);
+                LocalDate startDateConversion = LocalDate.parse(startDate,formatter);
+                LocalDate listDateConversion = LocalDate.parse(userInfoList[0],formatter);
 
                 //This boolean expersion will check all the expect status whether the status are correct or empty
-                boolean comparingCondtion = ((startDate.isEmpty() || userInfoList[0].equals(startDate)) &&
+                boolean comparingCondtion = ((startDate.isEmpty() || listDateConversion.isAfter(startDateConversion)) &&
                         (description.isEmpty() || userInfoList[2].contains(description))
-                        && (vendor.isEmpty() || userInfoList[3].equalsIgnoreCase(vendor)) &&
-                        (amount.isEmpty() || userInfoList[4].equals(amount)));
+                        && (vendor.isEmpty() || userInfoList[3].trim().equalsIgnoreCase(vendor)) &&
+                        (amount.isEmpty() || userInfoList[4].equals(amount)) &&
+                        (endDate.isEmpty() || listDateConversion.isBefore(endDateConversion)));
+
                 //will give an out if the comparingCondtion is true.
                 if (comparingCondtion){
                     System.out.println(userInfo);
                 }
-                bufReader.close();
-                reports(scanner,fileTransaction);
             }
+            bufReader.close();
+            reports(scanner,fileTransaction);
 
         }catch (Exception e){
             System.out.println("customSearch() method:). \n" + e);
