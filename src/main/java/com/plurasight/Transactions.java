@@ -238,9 +238,11 @@ public class Transactions {
                 if (!checkDate){
                     System.out.println(userInfo);
                 }
+
             }
+            //will close the file after reading
             bufreader.close();
-            reports(scanner,fileTransaction);
+            reports(scanner,fileTransaction);// going back to the report method
         }catch ( Exception e ) {
             System.out.println("Can not found the file.\nMonthToDate()'s method in transaction class\n" + e);
         }
