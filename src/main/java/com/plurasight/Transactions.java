@@ -211,7 +211,7 @@ public class Transactions {
                 case 2 -> previousMonth(scanner,fileTransaction);//show all the transaction for the prvious month
                 case 3 -> yearTODate(scanner,fileTransaction);//show all transactions from userI
                 case 4 -> searchByVendor(scanner,fileTransaction);//prompt the user for the vendor name and display all entries for that vendor
-                case 5 -> search(scanner,fileTransaction);
+                case 5 -> customSearch(scanner,fileTransaction);
                 case 0 -> ledger(scanner,fileTransaction);
                 default -> System.out.println("Invalid number.\nTry again please.:)\n");
             }
@@ -322,7 +322,7 @@ public class Transactions {
     }
 
 
-    public static void search(Scanner scanner,String fileTransaction){
+    public static void customSearch(Scanner scanner,String fileTransaction){
         System.out.println("******** Custom Search ********\nPlease fill out the custom's fields");
         System.out.println("Start Date:");
         String startDate = scanner.nextLine().trim();
@@ -337,12 +337,27 @@ public class Transactions {
 
 
 
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader(fileTransaction));
+            String userInfo = bufReader.readLine();
+            while(userInfo != null){
+                userInfo = bufReader.readLine();
+                String[] userInfoList = userInfo.split("\\|");
+                boolean comparingCondtion = ((startDate.isEmpty() || userInfoList[0].equals(startDate)) &&
+                        (description.isEmpty() || userInfoList[2].contains(description))
+                        && (vendor.isEmpty() || userInfoList[3].equalsIgnoreCase(vendor)) &&
+                        (amount.isEmpty() || userInfoList[4].equals(amount)));
+                if (comparingCondtion){
+                    System.out.println(userInfo);
 
+                }
+                bufReader.close();
+                reports(scanner,fileTransaction);
+            }
 
-
-
-    }
-    public static void customSearch(String startDate,String endDate,String description,String vendor,String amount,String fileTransaction){
+        }catch (Exception e){
+            System.out.println("customSearch() method:). \n" + e);
+        }
 
     }
 
