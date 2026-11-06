@@ -13,24 +13,26 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Transactions {
-    //Start method that check if the user has an account so can get accesses to his account
+    //Start the program or show the closing message and the program by no calling any other methods
     public static void start(int stop){
        if(stop == 0){
            System.out.println("Thank......:)");
        }else {
            homeScreen(new Scanner(System.in));
        }
-
-
     }
 
+    //Show the home menu and run the option the user chooses and run the sort method to put the transactions in order new to old
     public static void homeScreen(Scanner scanner){
         String filePath = "src/main/resources/transactions.csv";
         sortTransactions(filePath);
         while(true) {
-            String homePrompt = "####### Home #######\n" +
-                    "Please enter a character for the section want to choose\n" +
-                    "D)Add Deposit\nP)Make Payment (Debit)\nL)Ledger\nX)Exit";
+            String homePrompt = "======= Home =======\n" +
+                    "Choose an option:\n" +
+                    "D) Add Deposit\n" +
+                    "P) Make Payment (Debit)\n" +
+                    "L) View Ledger\n" +
+                    "X) Exit";
 
             //print out the mnue for the user to choose a section
             System.out.println(homePrompt);
@@ -48,6 +50,8 @@ public class Transactions {
         }
     }
 
+
+    //Sort the transactions from newest to oldest and save them in the same file
     public static void sortTransactions(String filePath){
         ArrayList<String> transactions = new ArrayList<>();
 
@@ -61,10 +65,8 @@ public class Transactions {
                 transactions.add(userInfo);
 
             }
-
             bufreader.close();
             transactions.sort(Collections.reverseOrder());
-
             try{
                 BufferedWriter bufWriter = new BufferedWriter(new FileWriter(filePath));
                 bufWriter.write(header);
@@ -85,6 +87,7 @@ public class Transactions {
     }
 
 
+    //Ask for the payment details and save the amount as a negative number
     public static void makePayment(Scanner scanner,String fileTransaction){
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
         LocalDateTime datetime = LocalDateTime.now();
@@ -103,13 +106,16 @@ public class Transactions {
             bufwriter.newLine();
             bufwriter.close();
             System.out.println("****** Payment was successfully ******");
+            sortTransactions(fileTransaction);
             homeScreen(scanner);
         }catch (Exception e){
             System.out.println("File not found.Payment() method" + e);
         }
     }
 
+    //Ask for the deposit details and add them to the transaction file
     public static void addDeposit(Scanner scanner, String fileTransaction){
+
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
         LocalDateTime datetime = LocalDateTime.now();
@@ -122,6 +128,7 @@ public class Transactions {
         System.out.println("Vendor:");
         String vendor = scanner.nextLine();
         System.out.println("****** Deposit was successfully ******");
+        sortTransactions(fileTransaction);
 
         try {
             BufferedWriter bufwriter = new BufferedWriter(new FileWriter(fileTransaction,true));
@@ -134,6 +141,7 @@ public class Transactions {
         }
     }
 
+    //Show the ledger menu so the user can choose which transactions to see
     public static void ledger(Scanner scanner,String filePath){
         while(true) {
             String ledgerPrompt = "####### Ledger #######\nA)All\nD)Deposit\nP)Payments\nR)Reports\nH)Home";
@@ -153,6 +161,7 @@ public class Transactions {
 
     }
 
+    //Pass the closing value to the start method
     public static void closingMethod(int zero){
         start(zero);
     }
@@ -161,7 +170,7 @@ public class Transactions {
 
 
 
-    //this function show all the deposit history
+    //Read the file and show only the deposits
     public static void deposit(String fileTransaction){
         //inside the fileTransaction the path for the file transaction should read from exp:"src/document"
         //Display only the entries that are deposits into the account
@@ -184,6 +193,7 @@ public class Transactions {
         }
     }
 
+    //Read the file and show only the payments
     public static void payment(String fileTransaction){
         //inside the fileTransaction the path for the file where thr program read from exp:"src/document"
         //Display only the entries that are deposits into the account
@@ -207,6 +217,7 @@ public class Transactions {
     }
 
 
+    //Show all transactions
     public static void showAllEntries(String fileTransaction){
         //inside the fileTransaction the path for the file transaction should read from exp:"src/document"
         //Display only the entries that are deposits into the account
@@ -225,6 +236,7 @@ public class Transactions {
         }
     }
 
+    //Show the reports menu and run the report the user chooses
     public static void reports(Scanner scanner,String fileTransaction){
         while(true) {
             //Prompt for the Reports page
@@ -326,6 +338,7 @@ public class Transactions {
         }
     }
 
+    //Show transactions from the previous calendar year
     public static void previousYear(Scanner scanner,String fileTransaction){
         LocalDate lastYearDate = LocalDate.now().minusYears(1).withMonth(1).withDayOfMonth(1);
         try {
@@ -348,8 +361,7 @@ public class Transactions {
     }
 
 
-
-
+    //Ask for a vendor name and show the matching transactions
     public static void searchByVendor(Scanner scanner,String fileTransaction){
         System.out.println("Please Enter Vendor: ");
         String userVendor = scanner.nextLine().toLowerCase().trim();
@@ -375,6 +387,7 @@ public class Transactions {
     }
 
 
+    //Search using the fields the user fills in and skip the empty fields
     public static void customSearch(Scanner scanner,String fileTransaction){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
