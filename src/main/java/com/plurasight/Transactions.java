@@ -321,7 +321,7 @@ public class Transactions {
                 }
             }
             bufreader.close();//after all reading the
-            reports(scanner,fileTransaction);
+            reports(scanner,fileTransaction);//when finsh showing the detailes will call the report method again
         }catch (Exception e) {
             System.out.println("Can not found the file.\nsearchByVendor()'s method in transaction class\n" + e);
         }
