@@ -9,20 +9,10 @@ import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Date;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Transactions {
-    //Prompt for the Ledger page
-    String ledgerPrompt = "####### Ledger #######\n" +
-            "A)All\nD)Deposit\nP)Payments\nR)Reports\nH)Home";
-    //Prompt for the Reports page
-    String reportsPrompt = "####### Reports #######\nPlease enter number for the section you need OR 0.\n" +
-            "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Previous Year\n5)Search by Vendor\n0)Back\n";
-
-
     //Start method that check if the user has an account so can get accesses to his account
     public static void start(int stop){
        if(stop == 0){
@@ -34,9 +24,9 @@ public class Transactions {
 
     }
 
-
-
     public static void homeScreen(Scanner scanner){
+        String filePath = "src/main/resources/transactions.csv";
+        sortTransactions(filePath);
         while(true) {
             String homePrompt = "####### Home #######\n" +
                     "Please enter a character for the section want to choose\n" +
@@ -47,7 +37,6 @@ public class Transactions {
             String userInput = scanner.nextLine();
             userInput = userInput.toUpperCase().trim();
             char userChoice = userInput.charAt(0);
-            String filePath = "src/main/resources/transactions.csv";
 
             switch (userChoice) {
                 case 'D' -> addDeposit(scanner, filePath);
@@ -58,6 +47,43 @@ public class Transactions {
             }
         }
     }
+
+    public static void sortTransactions(String filePath){
+        ArrayList<String> transactions = new ArrayList<>();
+
+        try {
+            BufferedReader bufreader = new BufferedReader(new FileReader(filePath));
+            String userInfo = bufreader.readLine();
+            String header = userInfo;
+            while(userInfo != null){
+                userInfo = bufreader.readLine();
+                if (userInfo == null ) break;
+                transactions.add(userInfo);
+
+            }
+
+            bufreader.close();
+            transactions.sort(Collections.reverseOrder());
+
+            try{
+                BufferedWriter bufWriter = new BufferedWriter(new FileWriter(filePath));
+                bufWriter.write(header);
+                bufWriter.newLine();
+
+                for(String transaction : transactions){
+                    bufWriter.write(transaction);
+                    bufWriter.newLine();
+                }
+                bufWriter.close();
+                System.out.println("Sort went successfully:)...\n");
+            }catch (Exception e){
+                System.out.println("Sort failed. In sorting method\n");
+            }
+        }catch (Exception e){
+            System.out.println("there is an error in the sorting Method.\n" + e);
+        }
+    }
+
 
     public static void makePayment(Scanner scanner,String fileTransaction){
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
@@ -307,11 +333,11 @@ public class Transactions {
             String userInfo = bufreader.readLine();
 
             while( userInfo != null){
-                if(userInfo == null) break;
                 userInfo = bufreader.readLine();
-                String[] dateList = userInfo.trim().split("\\|");
+                if(userInfo == null) break;
+                String[] dateList = userInfo.split("\\|");
                 LocalDate fileDate = LocalDate.parse(dateList[0]);
-                boolean checkDate = (lastYearDate.getMonthValue() == fileDate.getMonthValue()) && (lastYearDate.getYear() == fileDate.getYear());
+                boolean checkDate = (lastYearDate.getYear() == fileDate.getYear());
                 if (checkDate){
                     System.out.println(userInfo);
                 }
