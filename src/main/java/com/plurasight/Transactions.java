@@ -26,7 +26,7 @@ public class Transactions {
             String homePrompt = "======= Home =======\n" +
                     "Choose an option:\n" +
                     "D) Add Deposit\n" +
-                    "P) Make Payment (Debit)\n" +
+                    "P) Make Payment\n" +
                     "L) View Ledger\n" +
                     "X) Exit";
 
