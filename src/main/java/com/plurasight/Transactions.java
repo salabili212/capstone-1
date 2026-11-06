@@ -34,6 +34,10 @@ public class Transactions {
             System.out.println(homePrompt);
             String userInput = scanner.nextLine();
             userInput = userInput.toUpperCase().trim();
+            if(userInput.isEmpty()){
+                System.out.println("Please choose an option.");
+                continue;
+            }
             char userChoice = userInput.charAt(0);
 
             switch (userChoice) {
@@ -85,7 +89,7 @@ public class Transactions {
 
     //Ask for the payment details and save the amount as a negative number
     public static void makePayment(Scanner scanner,String fileTransaction){
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm:ss");
         LocalDateTime datetime = LocalDateTime.now();
         String dateAndTime = datetime.format(format);
         System.out.println("Payment description:");
@@ -113,7 +117,7 @@ public class Transactions {
     public static void addDeposit(Scanner scanner, String fileTransaction){
 
 
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd|hh:mm:ss");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm:ss");
         LocalDateTime datetime = LocalDateTime.now();
         String dateAndTime = datetime.format(format);
         System.out.println("Deposit description:");
@@ -143,7 +147,11 @@ public class Transactions {
             String ledgerPrompt = "####### Ledger #######\nA)All\nD)Deposit\nP)Payments\nR)Reports\nH)Home";
             System.out.println(ledgerPrompt);
             String userInput = scanner.nextLine();
-            userInput = userInput.toUpperCase();
+            userInput = userInput.toUpperCase().trim();
+            if(userInput.isEmpty()){
+                System.out.println("Please choose an option.");
+                continue;
+            }
             char userChoice = userInput.charAt(0);
             switch (userChoice) {
                 case 'A' -> showAllEntries(filePath);//show all the transactions in the account
@@ -233,16 +241,20 @@ public class Transactions {
         while(true) {
             //Prompt for the Reports page
             String reportsPrompt = "####### Reports #######\nPlease enter number for the section you need OR 0.\n" +
-                    "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Search by Vendor\n5)Previous Year\n6)Custom Search\n0)Back\n";
+                    "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Previous Year\n5)Search by Vendor\n6)Custom Search\n0)Back\n";
             System.out.println(reportsPrompt);
-            String userChoice = scanner.nextLine();
+            String userChoice = scanner.nextLine().trim();
+            if(userChoice.isEmpty()){
+                System.out.println("Please choose an option.");
+                continue;
+            }
             int userChoiceInt = Integer.parseInt(userChoice);
             switch (userChoiceInt) {
                 case 1 -> monthToDate(scanner,fileTransaction);//show all transaction for all months to the update months
                 case 2 -> previousMonth(scanner,fileTransaction);//show all the transaction for the prvious month
                 case 3 -> yearTODate(scanner,fileTransaction);//show all transactions from userI
-                case 4 -> searchByVendor(scanner,fileTransaction);//prompt the user for the vendor name and display all entries for that vendor
-                case 5 -> previousYear(scanner,fileTransaction);
+                case 4 -> previousYear(scanner,fileTransaction);
+                case 5 -> searchByVendor(scanner,fileTransaction);//prompt the user for the vendor name and display all entries for that vendor
                 case 6 -> customSearch(scanner,fileTransaction);
                 case 0 -> ledger(scanner,fileTransaction);
                 default -> System.out.println("Invalid number.\nTry again please.:)\n");
