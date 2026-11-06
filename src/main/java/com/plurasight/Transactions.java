@@ -300,7 +300,26 @@ public class Transactions {
         }
     }
 
+    public static void previousYear(Scanner scanner,String fileTransaction){
+        LocalDate lastYearDate = LocalDate.now().minusYears(1).withMonth(1).withDayOfMonth(1);
+        try {
+            BufferedReader bufreader = new BufferedReader(new FileReader(fileTransaction));
+            String userInfo = bufreader.readLine();
 
+            while( userInfo != null){
+                if(userInfo == null) break;
+                userInfo = bufreader.readLine();
+                String[] dateList = userInfo.trim().split("\\|");
+                LocalDate fileDate = LocalDate.parse(dateList[0]);
+                boolean checkDate = (lastYearDate.getMonthValue() == fileDate.getMonthValue()) && (lastYearDate.getYear() == fileDate.getYear());
+                if (checkDate){
+                    System.out.println(userInfo);
+                }
+            }
+        }catch (Exception e) {
+            System.out.println("An error happen in the previous year method in transaction class\n" + e);
+        }
+    }
 
 
     public static void searchByVendor(Scanner scanner,String fileTransaction){
