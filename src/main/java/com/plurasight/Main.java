@@ -13,7 +13,7 @@ import static com.plurasight.Transactions.start;
 public class Main {
     public static void main(String[] args) {
         //call the starting method
-        start(1);
+        start();
 
     }
 

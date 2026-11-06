@@ -14,12 +14,8 @@ import java.util.regex.Pattern;
 
 public class Transactions {
     //Start the program or show the closing message and the program by no calling any other methods
-    public static void start(int stop){
-       if(stop == 0){
-           System.out.println("Thank......:)");
-       }else {
-           homeScreen(new Scanner(System.in));
-       }
+    public static void start(){
+        homeScreen(new Scanner(System.in));
     }
 
     //Show the home menu and run the option the user chooses and run the sort method to put the transactions in order new to old
@@ -44,7 +40,7 @@ public class Transactions {
                 case 'D' -> addDeposit(scanner, filePath);
                 case 'P' -> makePayment(scanner, filePath);
                 case 'L' -> ledger(scanner, filePath);
-                case 'X' -> closingMethod(0);
+                case 'X' -> System.exit(0);
                 default -> System.out.println("Invalid input.\nPlease try again.");
             }
         }
@@ -161,10 +157,6 @@ public class Transactions {
 
     }
 
-    //Pass the closing value to the start method
-    public static void closingMethod(int zero){
-        start(zero);
-    }
 
 
 
