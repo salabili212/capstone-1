@@ -35,6 +35,7 @@ public class Transactions {
     }
 
 
+
     public static void homeScreen(Scanner scanner){
         while(true) {
             String homePrompt = "####### Home #######\n" +
@@ -202,7 +203,7 @@ public class Transactions {
         while(true) {
             //Prompt for the Reports page
             String reportsPrompt = "####### Reports #######\nPlease enter number for the section you need OR 0.\n" +
-                    "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Previous Year\n5)Search by Vendor\n6)Custom Search\n0)Back\n";
+                    "1)Month To Date\n2)Previous Month\n3)Year To Date\n4)Search by Vendor\n5)Previous Year\n6)Custom Search\n0)Back\n";
             System.out.println(reportsPrompt);
             String userChoice = scanner.nextLine();
             int userChoiceInt = Integer.parseInt(userChoice);
@@ -211,6 +212,7 @@ public class Transactions {
                 case 2 -> previousMonth(scanner,fileTransaction);//show all the transaction for the prvious month
                 case 3 -> yearTODate(scanner,fileTransaction);//show all transactions from userI
                 case 4 -> searchByVendor(scanner,fileTransaction);//prompt the user for the vendor name and display all entries for that vendor
+                case 5 -> previousYear(scanner,fileTransaction);
                 case 6 -> customSearch(scanner,fileTransaction);
                 case 0 -> ledger(scanner,fileTransaction);
                 default -> System.out.println("Invalid number.\nTry again please.:)\n");
@@ -299,6 +301,8 @@ public class Transactions {
     }
 
 
+
+
     public static void searchByVendor(Scanner scanner,String fileTransaction){
         System.out.println("Please Enter Vendor: ");
         String userVendor = scanner.nextLine().toLowerCase().trim();
@@ -339,23 +343,28 @@ public class Transactions {
         System.out.println("Amount:");
         String amount = scanner.nextLine().trim();
 
-
-
         try {
             BufferedReader bufReader = new BufferedReader(new FileReader(fileTransaction));
             String userInfo = bufReader.readLine();
             while(userInfo != null){
                 userInfo = bufReader.readLine();
+                if (userInfo == null) break;
                 String[] userInfoList = userInfo.split("\\|");
-                LocalDate endDateConversion = LocalDate.parse(endDate,formatter);
-                LocalDate startDateConversion = LocalDate.parse(startDate,formatter);
+                LocalDate endDateConversion = null;
+                LocalDate startDateConversion = null;
+                if (!endDate.isEmpty()){
+                    endDateConversion = LocalDate.parse(endDate,formatter);
+                }
+                if (!startDate.isEmpty()){
+                    startDateConversion = LocalDate.parse(startDate,formatter);
+                }
                 LocalDate listDateConversion = LocalDate.parse(userInfoList[0],formatter);
 
                 //This boolean expersion will check all the expect status whether the status are correct or empty
                 boolean comparingCondtion = ((startDate.isEmpty() || listDateConversion.isAfter(startDateConversion)) &&
                         (description.isEmpty() || userInfoList[2].contains(description))
                         && (vendor.isEmpty() || userInfoList[3].trim().equalsIgnoreCase(vendor)) &&
-                        (amount.isEmpty() || userInfoList[4].equals(amount)) &&
+                        (amount.isEmpty() || Double.parseDouble(userInfoList[4].trim()) == Double.parseDouble(amount)) &&
                         (endDate.isEmpty() || listDateConversion.isBefore(endDateConversion)));
 
                 //will give an out if the comparingCondtion is true.
